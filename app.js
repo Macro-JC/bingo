@@ -4,9 +4,9 @@ createApp({
   data: function () {
     return {
       bingos: [],
-      numbers: {},
-      num:null,
+      leters: {},
       nums: [],
+      numbers: []
     };
   },
   methods: {
@@ -25,11 +25,14 @@ createApp({
 
       return arr
     },
-    addNum(){
-      this.nums.push(String(this.num).padStart(2,'0'))
-      this.num = ''
-      this.$refs.input.focus()
-      debugger
+    addNum(n){
+      this.nums.push(n)
+    },
+    back(){
+      this.numbers = []
+    },
+    showNumbers(l){
+      this.numbers =  this.leters[l];
     }
   },
   computed: {
@@ -41,7 +44,7 @@ createApp({
         .fill(start)
         .map((x, y) => x + y);
     
-    this.numbers = {
+    this.leters = {
       B: range(15, 1),
       I: range(15, 16),
       N: range(15, 31),

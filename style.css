@@ -3,6 +3,17 @@
     font-weight: 800;
 }
 
+.btn{
+    font-weight: 800;
+}
+
+.leter, .number{
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    margin: .25rem;
+}
+
 table{
     margin-right: .5rem;
 }
