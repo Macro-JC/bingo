@@ -4,9 +4,9 @@ createApp({
   data: function () {
     return {
       bingos: [],
-      message: "Hello sVuse!",
       numbers: {},
-      nums: ['14','40','54','46','70'],
+      num:null,
+      nums: [],
     };
   },
   methods: {
@@ -25,6 +25,12 @@ createApp({
 
       return arr
     },
+    addNum(){
+      this.nums.push(String(this.num).padStart(2,'0'))
+      this.num = ''
+      this.$refs.input.focus()
+      debugger
+    }
   },
   computed: {
     
@@ -48,8 +54,10 @@ createApp({
         return response.json();
       })
       .then((data) => {
-        this.bingos = data;
-        debugger
+        this.bingos = data.map(b=>{
+          b.numbers = this.chunk(b.numbers)
+          return b
+        })
       })
       .catch((err) => {
         // Do something for an error here
