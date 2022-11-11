@@ -1,0 +1,14 @@
+.title{
+    letter-spacing: 1rem;
+    font-weight: 800;
+}
+
+td, th{
+    text-align: center;
+}
+
+td.active{
+    background-color: var(--bs-red);
+    color: white;
+    font-weight: bold;
+}

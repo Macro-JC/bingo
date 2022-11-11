@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>BINGO</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="/js/vue.global.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <div class="container-fluid">
+        <div class="mt-2">
+          <h1 class="title text-center">BINGO</h1>
+        </div>
+        <hr />
+        <div class="row bingos">
+          <div class="col-md-4" v-for="bingo in bingos">
+            <div class="card mb-4">
+              <div class="card-header">#{{bingo.id}}</div>
+              <div class="card-body">
+                <table class="table table-sm mb-0">
+                    <thead>
+                        <tr>
+                            <th>B</th>
+                            <th>I</th>
+                            <th>N</th>
+                            <th>G</th>
+                            <th>O</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="r in 5">
+                            <td v-for="c in 5" :class="{'active':checkNum(bingo.numbers[(r-1)+((c-1)*5)])}">
+                                {{bingo.numbers[(r-1)+((c-1)*5)]}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      
+    </div>
+
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
