@@ -12,19 +12,21 @@
     <div id="app">
       <div class="container-fluid py-2">
           <div class="leters text-center" v-if="!numbers.length">
-            <button class="btn btn-outline-primary leter" v-for="(n,l) in leters" @click="showNumbers(l)">
+            <button class="btn btn-danger leter" v-for="(n,l) in leters" @click="showNumbers(l)" :disabled="block">
               {{l}}
             </button>
+            <button class="btn btn-secondary float-end" @click="block=!block">{{block ? 'Unblock' : 'Block'}}</button>
           </div>
           <div class="text-center numbers" v-else>
-            <button class="btn btn-secondary float-start" @click="back()"> back</button> <br>
-            <button class="btn number" :class="{'btn-outline-primary':checkNum(n)}" v-for="n in numbers"  @click="addNum(n)">{{String(n).padStart(2,'0')}}</button>
+            <button class="btn btn-secondary float-start" @click="back()"> back</button>
+            <button class="btn number" :class="classNumber(n)" v-for="n in numbers"  @click="addNum(n)">{{String(n).padStart(2,'0')}}</button>
           </div>
-        <div class="row bingos">
-          <div class="col-md-4" v-for="bingo in bingos">
-            <div class="card mb-4">
-              <div class="card-body p-1">
-                <table class="table table-sm table-borderless mb-0">
+          <hr>
+          <div class="row bingos">
+          <div class="col-md-4" v-for="b in sort()">
+            <div class="card mb-4" :class="{'completed':b.completed}">
+              <div class="card-body p-1" >
+                  <table class="table table-sm table-borderless mb-0">
                     <thead>
                         <tr>
                             <th>B</th>
@@ -35,18 +37,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="r in bingo.numbers">
+                      <tr v-for="r in this.bingos[b.idx].numbers">
                         <td v-for="c in r" :class="{active: checkNum(c), nbingo:!c}">
                           <div>
-                            <span>{{c || '#'+bingo.id}}</span>
+                            <span>{{c || '#'+this.bingos[b.idx].id}}</span>
                           </div>
                         </td>
                       </tr>
-                        <!-- <tr v-for="r in 5">
-                            <td v-for="c in 5" :class="{'active':checkNum(bingo.numbers[(r-1)+((c-1)*5)])}">
-                                {{bingo.numbers[(r-1)+((c-1)*5)]}}
-                            </td>
-                        </tr> -->
                     </tbody>
                 </table>
               </div>

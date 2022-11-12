@@ -6,12 +6,13 @@ createApp({
       bingos: [],
       leters: {},
       nums: [],
-      numbers: []
+      numbers: [],
+      block: false,
     };
   },
   methods: {
     checkNum(num) {
-      return this.nums.includes(num)
+      return this.nums.includes(parseInt(num))
     },
 
     chunk(arr) {
@@ -26,17 +27,53 @@ createApp({
       return arr
     },
     addNum(n){
-      this.nums.push(n)
+      if(!this.checkNum(n)){
+        this.nums.push(n)
+      }else{
+        this.nums.splice(this.nums.indexOf(n),1)
+      }
+      this.saveLocal()
     },
     back(){
       this.numbers = []
     },
     showNumbers(l){
       this.numbers =  this.leters[l];
+    },
+    classNumber(n){
+      let numExist = this.checkNum(n);
+      return {
+        'btn-primary':numExist,
+        'btn-outline-secondary':!numExist,
+      }
+    },
+    saveLocal(){
+      localStorage.setItem('nums',JSON.stringify(this.nums))
+    },
+    sort(){
+      return this.bingos
+          .map(({numbers},idx)=>{
+            let nums = numbers.flat(1).filter(Boolean).map(n=>parseInt(n))
+            return {
+              idx, 
+              size: new Set([...nums, ...this.nums]).size,
+              completed: this.checker(nums)
+          }
+        })
+          .sort((a,b)=>a.size-b.size)
+    },
+    checker(arr){
+      let nums = Object.values(this.nums)
+      return arr.every(v=>nums.includes(v))
     }
   },
-  computed: {
-    
+  watch: {
+    nums:{
+      handler: function(val, oldVal){
+        this.sort()
+      },
+      deep: true
+    }
   },
   mounted() {
     const range = (size, start) =>
@@ -61,6 +98,10 @@ createApp({
           b.numbers = this.chunk(b.numbers)
           return b
         })
+        let localNums = localStorage.getItem('nums')
+        if(localNums){
+          this.nums = JSON.parse(localNums)
+        }
       })
       .catch((err) => {
         // Do something for an error here
